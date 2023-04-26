@@ -32,12 +32,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    color: GlobalStyles.colors.primary100,
+    color: GlobalStyles.colors.primaryLight,
     marginBottom: 4,
   },
   input: {
-    backgroundColor: GlobalStyles.colors.primary100,
-    color: GlobalStyles.colors.primary700,
+    backgroundColor: GlobalStyles.colors.primaryLight,
+    color: GlobalStyles.colors.primary,
     padding: 6,
     borderRadius: 6,
     fontSize: 18,

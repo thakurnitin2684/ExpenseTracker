@@ -14,7 +14,8 @@ function ManageExpense({ route, navigation }) {
   const [error, setError] = useState();
 
   const expensesCtx = useContext(ExpensesContext);
-
+  const token = expensesCtx.token;
+  const userId = expensesCtx.userId;
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
 
@@ -31,7 +32,7 @@ function ManageExpense({ route, navigation }) {
   async function deleteExpenseHandler() {
     setIsSubmitting(true);
     try {
-      await deleteExpense(editedExpenseId);
+      await deleteExpense(editedExpenseId, token, userId);
       expensesCtx.deleteExpense(editedExpenseId);
       navigation.goBack();
     } catch (error) {
@@ -49,9 +50,9 @@ function ManageExpense({ route, navigation }) {
     try {
       if (isEditing) {
         expensesCtx.updateExpense(editedExpenseId, expenseData);
-        await updateExpense(editedExpenseId, expenseData);
+        await updateExpense(editedExpenseId, expenseData, token, userId);
       } else {
-        const id = await storeExpense(expenseData);
+        const id = await storeExpense(expenseData, token, userId);
         expensesCtx.addExpense({ ...expenseData, id: id });
       }
       navigation.goBack();
@@ -97,13 +98,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: GlobalStyles.colors.primary800,
+    backgroundColor: GlobalStyles.colors.primaryDark,
   },
   deleteContainer: {
     marginTop: 16,
     paddingTop: 8,
     borderTopWidth: 2,
-    borderTopColor: GlobalStyles.colors.primary200,
+    borderTopColor: GlobalStyles.colors.primary,
     alignItems: "center",
   },
 });

@@ -1,4 +1,9 @@
-import { FlatList } from "react-native";
+import {
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  View,
+} from "react-native";
 
 import ExpenseItem from "./ExpenseItem";
 
@@ -6,13 +11,19 @@ function renderExpenseItem(itemData) {
   return <ExpenseItem {...itemData.item} />;
 }
 
-function ExpensesList({ expenses }) {
+function ExpensesList({ expenses, isFetching, getExpenses }) {
   return (
-    <FlatList
-      data={expenses}
-      renderItem={renderExpenseItem}
-      keyExtractor={(item) => item.id}
-    />
+    <View>
+      {isFetching ? <ActivityIndicator /> : null}
+      <FlatList
+        data={expenses}
+        renderItem={renderExpenseItem}
+        keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl refreshing={isFetching} onRefresh={getExpenses} />
+        }
+      />
+    </View>
   );
 }
 

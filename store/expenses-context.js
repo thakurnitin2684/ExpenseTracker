@@ -1,6 +1,12 @@
-import { createContext, useReducer } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useReducer, useEffect, useState } from "react";
 
 export const ExpensesContext = createContext({
+  token: "",
+  userId: "",
+  isAuthenticated: false,
+  authenticate: (token, userId) => {},
+  logout: () => {},
   expenses: [],
   addExpense: ({ description, amount, date }) => {},
   setExpenses: (expenses) => {},
@@ -33,6 +39,22 @@ function expensesReducer(state, action) {
 
 function ExpensesContextProvider({ children }) {
   const [expensesState, dispatch] = useReducer(expensesReducer, []);
+  const [authToken, setAuthToken] = useState();
+  const [uId, setUserId] = useState();
+
+  function authenticate(token, uID) {
+    setAuthToken(token);
+    setUserId(uID);
+    AsyncStorage.setItem("token", token);
+    AsyncStorage.setItem("userId", uID);
+  }
+
+  function logout() {
+    setAuthToken(null);
+    setUserId(null);
+    AsyncStorage.removeItem("token");
+    AsyncStorage.removeItem("userId");
+  }
 
   function addExpense(expenseData) {
     dispatch({ type: "ADD", payload: expenseData });
@@ -51,6 +73,11 @@ function ExpensesContextProvider({ children }) {
   }
 
   const value = {
+    token: authToken,
+    userId: uId,
+    isAuthenticated: !!authToken,
+    authenticate: authenticate,
+    logout: logout,
     expenses: expensesState,
     setExpenses: setExpenses,
     addExpense: addExpense,

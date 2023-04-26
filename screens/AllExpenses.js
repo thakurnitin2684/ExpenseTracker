@@ -11,6 +11,7 @@ function AllExpenses() {
       expenses={expensesCtx.expenses}
       expensesPeriod="Total"
       fallbackText="No registered expenses found!"
+      isFetching={false}
     />
   );
 }

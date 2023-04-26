@@ -10,14 +10,14 @@ import { fetchExpenses } from "../util/http";
 function RecentExpenses() {
   const [isFetching, setIsFetching] = useState(true);
   const [error, setError] = useState();
-
   const expensesCtx = useContext(ExpensesContext);
-
+  const token = expensesCtx.token;
+  const userId = expensesCtx.userId;
   useEffect(() => {
-    async function getExpenses() {
+    async function getExpensesFirstTIme() {
       setIsFetching(true);
       try {
-        const expenses = await fetchExpenses();
+        const expenses = await fetchExpenses(token, userId);
         expensesCtx.setExpenses(expenses);
       } catch (error) {
         setError("Could not fetch expenses!");
@@ -25,9 +25,19 @@ function RecentExpenses() {
       setIsFetching(false);
     }
 
-    getExpenses();
-  }, []);
+    getExpensesFirstTIme();
+  }, [userId]);
 
+  async function getExpenses() {
+    setIsFetching(true);
+    try {
+      const expenses = await fetchExpenses(token, userId);
+      expensesCtx.setExpenses(expenses);
+    } catch (error) {
+      setError("Could not fetch expenses!");
+    }
+    setIsFetching(false);
+  }
   if (error && !isFetching) {
     return <ErrorOverlay message={error} />;
   }
@@ -48,6 +58,8 @@ function RecentExpenses() {
       expenses={recentExpenses}
       expensesPeriod="Last 7 Days"
       fallbackText="No expenses registered for the last 7 days."
+      isFetching={isFetching}
+      getExpenses={getExpenses}
     />
   );
 }

@@ -24,21 +24,23 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 4,
     padding: 8,
-    backgroundColor: GlobalStyles.colors.primary500,
+    backgroundColor: GlobalStyles.colors.accent,
   },
   flat: {
     backgroundColor: "transparent",
   },
   buttonText: {
-    color: "white",
+    color: GlobalStyles.colors.primaryDark,
     textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16,
   },
   flatText: {
-    color: GlobalStyles.colors.primary200,
+    color: GlobalStyles.colors.primaryLight,
   },
   pressed: {
     opacity: 0.75,
-    backgroundColor: GlobalStyles.colors.primary100,
+    backgroundColor: GlobalStyles.colors.primaryDark,
     borderRadius: 4,
   },
 });
