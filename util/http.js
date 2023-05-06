@@ -28,8 +28,6 @@ export async function fetchExpenses(token, userId) {
     };
     expenses.push(expenseObj);
   }
-  console.log("HTTP", userId);
-  console.log("HTTP", token.slice(0, 5));
   return expenses;
 }
 
